@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoshimiya~</title>
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <nav id="navbar">
+        <div class="nav-content">
+            <a href="#aboutme" class="nav-link">About Me</a>
+            <a href="#github" class="nav-link">My Projects</a>
+            <div class="language-switcher">
+                <button class="lang-btn active" data-lang="vi">🇻🇳</button>
+                <button class="lang-btn" data-lang="en">🇺🇸</button>
+                <button class="lang-btn" data-lang="ja">🇯🇵</button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="container">
+        <header>
+            <div id="profile-pic">
+                <img src="../img/heo.jpg" alt="Profile Picture">
+                <div class="avatar-deco" aria-hidden="true"></div>
+            </div>
+            <div id="smol-aboutme">
+                <div class="intro-text">
+                    <p class="greeting">
+                        <span class="greeting-text" data-vi="Konichiwa, watashi " data-en="Konichiwa, watashi "
+                            data-ja="こんにちは、私は ">Konichiwa, watashi </span><span id="typewriter"></span><span
+                            class="desuwa" data-vi=" desuwa" data-en=" desuwa" data-ja=" ですわ"> desuwa</span>
+                    </p>
+                    <p class="tagline"
+                        data-vi="i love to try out new thing! like programing, designing, ect. after all you only live once ~"
+                        data-en="i love to try out new thing! like programing, designing, ect. after all you only live once ~"
+                        data-ja="プログラミング、デザインなど、新しいことに挑戦するのが大好き！人生は一度きり ~">
+                        i love to try out new thing! like programing, designing, ect. after all you only live once ~
+                    </p>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div id="left-box">
+                <div id="aboutme">
+                    <h2 data-vi="Sơ lược về bản thân:" data-en="Abit about me:" data-ja="👀 自己紹介">Sơ lược về bản thân:</h2>
+                    <div class="about-content"
+                        data-vi="Xin chào nhé! Tôi là Chí Vỹ, 1 thanh niên <span id='age'></span> tuổi hiện đang học ở IUH (Industrial University of Ho Chi Minh City), học ngành: thiết kế vi mạch.<br><br>Tui là 1 con người sống theo chủ nghĩa tự do, thích khám phá những thứ mới mẻ và không ngại thử thách. Dù đang học về vi mạch nhưng tui cũng đam mê code, design, và mọi thứ liên quan đến công nghệ. Cuộc sống chỉ có một lần, vậy nên tui muốn tận hưởng từng khoảnh khắc và học hỏi càng nhiều càng tốt! 🌟🌟"
+                        data-en="Hello! I'm Chí Vỹ, a <span id='age-en'></span>-year-old student currently studying at IUH (Industrial University of Ho Chi Minh City), majoring in IC Design.<br><br>I'm a free-spirited person who loves exploring new things and isn't afraid of challenges. Although I'm studying IC design, I'm also passionate about coding, design, and everything tech-related. Life is only once, so I want to enjoy every moment and learn as much as possible! 🌟🌟"
+                        data-ja="こんにちは！私はチーヴィー、<span id='age-ja'></span>歳で、現在IUH（ホーチミン市工業大学）で集積回路設計を専攻しています。<br><br>自由な精神を持ち、新しいことを探求するのが大好きで、挑戦を恐れません。集積回路を勉強していますが、プログラミング、デザイン、そして技術に関するすべてに情熱を持っています。人生は一度きりなので、すべての瞬間を楽しみ、できるだけ多くのことを学びたいです！ 🌟🌟">
+                        Xin chào nhé! Tôi là Vỹ, 1 thanh niên <span id="age"></span> tuổi hiện đang học ở IUH
+                        (Industrial University of Ho Chi Minh City), tui học ngành thiết kế vi mạch 1 ngành còn khá mới ở Việt Nam<br><br>
+                        Tui là 1 con người sống theo chủ nghĩa tự do, thích khám phá những thứ mới mẻ và không ngại thử
+                        thách. Dù đang học về vi mạch nhưng tui cũng đam mê code, design, và mọi thứ liên quan đến công
+                        nghệ. Cuộc sống chỉ có một lần, vậy nên tui muốn tận hưởng từng khoảnh khắc và học hỏi càng
+                        nhiều càng tốt!
+                    </div>
+                </div>
+                <div id="github">
+                    <h3 data-vi="💻 GitHub Projects" data-en="💻 GitHub Projects" data-ja="💻 GitHubプロジェクト">💻 GitHub
+                        Projects</h3>
+                    <div id="github-repos"></div>
+                    <a href="https://github.com/ChiVy2306" target="_blank" class="github-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+                <div id="activity">
+                    <h3 data-vi="🎮 Trạng thái hoạt động" data-en="🎮 What I'm Playing" data-ja="🎮 今プレイ中">🎮 Trạng thái hoạt động
+                    </h3>
+                    <div id="discord-activity">
+                        <div class="loading" data-vi="Đang tải..." data-en="Loading..." data-ja="読み込み中...">Đang tải...
+                        </div>
+                    </div>
+                </div>
+                <div id="love-status">
+                    <h3 data-vi="💕 Tình Trạng" data-en="💕 Relationship" data-ja="💕 恋愛状況">💕 Tình Trạng</h3>
+                    <div class="love-content">
+                        <span class="heart-beat">❤️</span>
+                        <span class="status-text" data-vi="Đã Có Chủ" data-en="Taken" data-ja="彼女あり">Đã Có Chủ</span>
+                    </div>
+                </div>
+            </div>
+            <div id="right-box">
+                <div id="quote">
+                    <h3 data-vi="💭 Quote of the Day" data-en="💭 Quote of the Day" data-ja="💭 今日の名言">💭 Quote of the
+                        Day</h3>
+                    <div id="quote-text"></div>
+                </div>
+                <div id="guild">
+                    <h3 data-vi="🏰 Discord Server" data-en="🏰 Discord Server" data-ja="🏰 Discordサーバー">🏰 My Discord
+                        Server</h3>
+                    <div class="guild-content">
+                        <p data-vi="Nếu bạn hứng thú thì đây là server discord của riêng tui nhé, thêm thông tin về ngôi nhà thứ 2 của tui nằm ở nút xem thêm nha" data-en="If you're interested, here's my personal Discord server! More info about my second home is in the 'see more' button~"
+                            data-ja="興味あったら、これ俺の個人Discordサーバーだよ！俺の第二の家についての詳しい情報は「もっと見る」ボタンにあるからね～">
+                            Nếu bạn hứng thú thì đây là server discord của riêng tui nhé, thêm thông tin về ngôi nhà thứ 2 của tui nằm ở nút xem thêm nha
+                        </p>
+                        <div class="guild-buttons">
+                            <a href="https://discord.gg/25pTutE3ky" target="_blank" class="guild-btn join-btn">
+                                <i class="fab fa-discord"></i> <span data-vi="Tham Gia" data-en="Join Server"
+                                    data-ja="参加する">Tham Gia</span>
+                            </a>
+                            <a href="https://chivy2306.github.io/Teratory/" target="_blank" class="guild-btn info-btn">
+                                <i class="fas fa-info-circle"></i> <span data-vi="Xem Thêm" data-en="Learn More"
+                                    data-ja="詳しく見る">Xem Thêm</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="game">
+                    <h3 data-vi="🎯 Game Yêu Thích" data-en="🎯 Favorite Games" data-ja="🎯 お気に入りのゲーム">🎯 Game Yêu Thích
+                    </h3>
+                    <div class="game-grid">
+                        <div class="game-item" title="">
+                            Elden Ring
+                        </div>
+                        <div class="game-item" title="steamid: 76561199580084775s">
+                            dead by daylight
+                        </div>
+                        <div class="game-item" title="UID: 819369165">
+                            Genshin Impact
+                        </div>
+                        <div class="game-item" title="UID: 801239878">
+                            Honkai: star rail
+                        </div>
+                        <div class="game-item" title="UID: 1300969124">
+                            zenless zone zero
+                        </div>
+                        <div class="game-item" title="con heo gian ác#TERA">
+                            League of Legends
+                        </div>
+                        <div class="game-item" title="con heo gian ác#TERA">
+                            Valorant
+                        </div>
+                        <div class="game-item" title="steamid: 76561199580084775s">
+                            CS2
+                        </div>
+                        <div class="game-item" title="">
+                            Minecraft
+                        </div>
+                        <div class="game-item" title="">
+                            Sekiro: Shadows Die Twice
+                        </div>
+                        <div class="game-item" title="username: huygaming09youtube">
+                            roblox
+                        </div>
+                        <div class="game-item" title="">
+                            project sekai
+                        </div>
+                    </div>
+                </div>
+                <div id="terminal-faq">
+                    <h3 data-vi="💻 Terminal FAQ" data-en="💻 Terminal FAQ" data-ja="💻 ターミナル FAQ">💻 Terminal FAQ</h3>
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <span class="terminal-dot red"></span>
+                            <span class="terminal-dot yellow"></span>
+                            <span class="terminal-dot green"></span>
+                            <span class="terminal-title">FAQ Terminal</span>
+                        </div>
+                        <div class="terminal-body" id="terminal-output">
+                        </div>
+                        <div class="terminal-input-line">
+                            <input type="text" id="terminal-input" class="terminal-input" 
+                                data-placeholder-vi="Nhập số..." 
+                                data-placeholder-en="Enter number..." 
+                                data-placeholder-ja="番号を入力..." 
+                                placeholder="Nhập số..." autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div>
+                <p data-vi="Được làm nên bởi sự quyết tâm và tạo ra bởi Phan Chí Vỹ ❤️" data-en="Made with determination and created by Phan Chí Vỹ ❤️ | © 2025"
+                    data-ja="決意で作られ、Phan Chí Vỹ が創り上げたもの ❤️">
+                    Được làm nên bởi sự quyết tâm và tạo ra bởi Phan Chí Vỹ ❤️ | © 2025
+                </p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/ConHeoGianAc.Teratory/" target="_blank" aria-label="Facebook">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://open.spotify.com/user/31e3rmwicibmzbqsqurbvocrrnca" target="_blank" aria-label="Spotify">
+                        <i class="fab fa-spotify"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
