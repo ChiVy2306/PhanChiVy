@@ -667,91 +667,57 @@ function createStars() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Update "No GUI mode" link (already set in HTML, but keeping for compatibility)
-    const noGuiLink = document.getElementById('no-gui-link');
-    if (noGuiLink && !noGuiLink.href.includes('phone-terminal')) {
-        noGuiLink.href = 'phone-terminal/phone-terminal.html';
-    }
-    
-    createStars();
-    initCustomCursor();
+    // Mobile-specific initialization
     typeWriter();
-
     updateAge();
     setInterval(updateAge, 1000);
-
     displayQuote();
-
     fetchGitHubRepos();
-
     fetchDiscordActivity(true);
     setInterval(() => fetchDiscordActivity(false), 30000);
-
-    // Initialize easter egg visibility based on current language
     toggleEasterEgg(currentLang);
 
+    // Status bar time update
+    function updateStatusTime() {
+        const timeEl = document.getElementById('status-time');
+        if (timeEl) {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            timeEl.textContent = `${hours}:${minutes}`;
+        }
+    }
+    updateStatusTime();
+    setInterval(updateStatusTime, 1000);
+
+    // Tab navigation
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetTab = btn.dataset.tab;
+            
+            // Update active states
+            tabButtons.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = document.getElementById(`tab-${targetTab}`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+                // Scroll to top of content
+                document.getElementById('mobile-content').scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Language switcher
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             switchLanguage(btn.dataset.lang);
         });
     });
-
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function (e) {
-            const targetId = this.getAttribute('href');
-            // Only prevent default for hash links (internal navigation)
-            if (targetId && targetId.startsWith('#')) {
-                e.preventDefault();
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    
-                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                    this.classList.add('active');
-                }
-            }
-            // For external links (like clone/index.html), let them work normally
-        });
-    });
-
-    const navbar = document.getElementById('navbar');
-    let lastScroll = 0;
-    
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        if (currentScroll > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        
-        lastScroll = currentScroll;
-    }, { passive: true });
-
-    const sections = document.querySelectorAll('#aboutme, #github');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    const observerOptions = {
-        root: null,
-        rootMargin: '-20% 0px -70% 0px',
-        threshold: 0
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${entry.target.id}`) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-        });
-    }, observerOptions);
-    
-    sections.forEach(section => observer.observe(section));
 
     (function setupGameCopy() {
         const gameItems = document.querySelectorAll('.game-grid .game-item[title]:not([title=""])');

@@ -1,11 +1,20 @@
+// ============================================
+// Phone Terminal - Rebuilt with Better Logic
+// ============================================
+
+// DOM Elements
 const terminalOutput = document.getElementById('terminal-output');
 const terminalActions = document.getElementById('terminal-actions');
 const redDot = document.querySelector('.terminal-dot.red');
 
-let currentLang = 'vi';
-let state = 'booting';
-let isTyping = false;
+// State Management
+const state = {
+    currentLang: 'vi',
+    appState: 'booting',
+    isTyping: false
+};
 
+// Translations Data
 const translations = {
     vi: {
         booting: {
@@ -22,8 +31,6 @@ const translations = {
             enterLang: 'Tap a number below to select language...',
             selectWhat: 'Chọn điều bạn muốn biết:',
             enterNumber: 'Tap a number below to select...',
-            invalidLang: 'Số không hợp lệ! Vui lòng nhập từ 1-3',
-            invalidNumber: 'bạn gì ơi, bạn đánh sai hay bạn bị ngoo vậy 💀? TAO BẢO TỪ 1-9',
             relationship: 'Tình Trạng',
             relationshipStatus: 'Đã Có nóc nhà òi ❤️',
             changeLanguage: 'Thay Đổi Ngôn Ngữ',
@@ -58,8 +65,6 @@ const translations = {
             enterLang: 'Tap a number below to select language...',
             selectWhat: 'Select what you want to know:',
             enterNumber: 'Tap a number below to select...',
-            invalidLang: 'Invalid number! Please enter 1-3',
-            invalidNumber: 'Invalid number! Please enter 1-9',
             relationship: 'Relationship Status',
             relationshipStatus: 'Taken ❤️. Girls, stay out of my way. no one can compare with my queen. she is the best',
             changeLanguage: 'Change Language',
@@ -94,8 +99,6 @@ const translations = {
             enterLang: '下の番号をタップして言語を選択してください...',
             selectWhat: '知りたいことを選んでください：',
             enterNumber: '下の番号をタップして選択してください...',
-            invalidLang: '無効な番号です！1-3を入力してください',
-            invalidNumber: '無効な番号です！1-9を入力してください',
             relationship: '恋愛状況',
             relationshipStatus: '彼女あり ❤️',
             changeLanguage: '言語を変更',
@@ -117,6 +120,7 @@ const translations = {
     }
 };
 
+// Static Data
 const quotes = [
     { text: '"Be yourself; everyone else is already taken."', author: '— Oscar Wilde' },
     { text: '"In the end, we only regret the chances we didn\'t take."', author: '— Lewis Carroll' },
@@ -150,8 +154,12 @@ const games = [
     { name: 'project sekai', title: '' }
 ];
 
+// ============================================
+// Utility Functions
+// ============================================
+
 function getUI() {
-    return translations[currentLang] || translations.vi;
+    return translations[state.currentLang] || translations.vi;
 }
 
 function calculateAge() {
@@ -192,8 +200,11 @@ function createBox(text) {
     const cleanText = text.replace(/<[^>]*>/g, '');
     const textWidth = getTextWidth(cleanText);
     const padding = 3;
-    const contentWidth = textWidth + (padding * 2);
-    const dashes = '─'.repeat(contentWidth);
+    const screenWidth = window.innerWidth || 375;
+    const maxChars = Math.floor((screenWidth - 60) / 8);
+    const maxContentWidth = Math.min(textWidth, Math.max(20, maxChars - 10));
+    const contentWidth = maxContentWidth + (padding * 2);
+    const dashes = '─'.repeat(Math.max(10, contentWidth));
     
     const spacesBefore = ' '.repeat(padding);
     const spacesAfter = ' '.repeat(padding);
@@ -204,6 +215,17 @@ function createBox(text) {
         bottom: `└${dashes}┘`
     };
 }
+
+function createSeparator() {
+    const screenWidth = window.innerWidth || 375;
+    const maxChars = Math.floor((screenWidth - 40) / 6);
+    const dashCount = Math.max(20, Math.min(40, maxChars));
+    return `<span class="separator-line">${'─'.repeat(dashCount)}</span>`;
+}
+
+// ============================================
+// Display Functions
+// ============================================
 
 function typewriterEffect(element, text, speed = 1.5) {
     return new Promise((resolve) => {
@@ -248,11 +270,16 @@ async function addLine(text, className = '', useTypewriter = false, speed = 1.5)
         line.innerHTML = text;
     }
     
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    requestAnimationFrame(() => {
+        terminalOutput.scrollTo({
+            top: terminalOutput.scrollHeight,
+            behavior: 'smooth'
+        });
+    });
 }
 
 async function addLines(lines) {
-    isTyping = true;
+    state.isTyping = true;
     clearActions();
     
     for (const lineData of lines) {
@@ -264,7 +291,7 @@ async function addLines(lines) {
         await sleep(30);
     }
     
-    isTyping = false;
+    state.isTyping = false;
 }
 
 function clearTerminal() {
@@ -274,27 +301,67 @@ function clearTerminal() {
 function clearActions() {
     if (terminalActions) {
         terminalActions.innerHTML = '';
+        terminalActions.className = 'terminal-actions';
     }
 }
 
-function createButton(number, text, onClick) {
+// ============================================
+// Button Functions
+// ============================================
+
+function createButton(number, text, onClick, isLanguageButton = false, isNumberOnly = false) {
     const button = document.createElement('button');
-    button.className = 'action-button';
-    button.innerHTML = `<span class="number">[${number}]</span><span class="text">${text}</span>`;
-    button.addEventListener('click', onClick);
+    
+    if (isNumberOnly) {
+        button.className = 'action-button number-only';
+        button.innerHTML = `<span class="number-only-text">${number}</span>`;
+    } else if (isLanguageButton) {
+        button.className = 'action-button language-button';
+        button.innerHTML = `<span class="number">[${number}]</span><span class="text">${text}</span>`;
+    } else {
+        button.className = 'action-button';
+        button.innerHTML = `<span class="number">[${number}]</span><span class="text">${text}</span>`;
+    }
+    
+    let touchStartTime = 0;
+    
     button.addEventListener('touchstart', (e) => {
+        touchStartTime = Date.now();
+        button.style.transform = 'scale(0.98)';
+    }, { passive: true });
+    
+    button.addEventListener('touchend', (e) => {
         e.preventDefault();
-        onClick();
+        const touchDuration = Date.now() - touchStartTime;
+        button.style.transform = '';
+        
+        if (touchDuration < 200) {
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+            onClick();
+        }
     }, { passive: false });
+    
+    button.addEventListener('click', onClick);
+    
     return button;
 }
 
-function showActionButtons(buttons) {
+function showActionButtons(buttons, type = 'default') {
     clearActions();
     if (!terminalActions) return;
     
     const container = document.createElement('div');
-    container.className = 'action-buttons';
+    if (type === 'language') {
+        container.className = 'action-buttons language-buttons';
+        terminalActions.classList.add('language-mode');
+    } else if (type === 'menu') {
+        container.className = 'action-buttons menu-buttons';
+        terminalActions.classList.add('menu-mode');
+    } else {
+        container.className = 'action-buttons';
+    }
     
     buttons.forEach(btn => {
         container.appendChild(btn);
@@ -302,6 +369,26 @@ function showActionButtons(buttons) {
     
     terminalActions.appendChild(container);
 }
+
+function showReturnMenuButton() {
+    const ui = getUI();
+    const returnText = {
+        vi: 'Quay lại Menu',
+        en: 'Return to Menu',
+        ja: 'メニューに戻る'
+    };
+    const buttons = [
+        createButton('Menu', returnText[state.currentLang] || 'Return to Menu', async () => {
+            if (state.isTyping) return;
+            await showMenu();
+        })
+    ];
+    showActionButtons(buttons, 'default');
+}
+
+// ============================================
+// Screen Functions
+// ============================================
 
 async function showBooting() {
     const ui = getUI();
@@ -324,7 +411,7 @@ async function showBooting() {
 }
 
 async function showLanguageSelection() {
-    state = 'language';
+    state.appState = 'language';
     clearTerminal();
     const ui = getUI();
     
@@ -351,29 +438,29 @@ function showLanguageButtons() {
     const ui = getUI();
     const buttons = [
         createButton(1, ui.booting.lang1.replace('[1] ', ''), async () => {
-            if (isTyping) return;
+            if (state.isTyping) return;
             await addLine(`<span class="user-prompt guest">@guest</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> 1`, 'command');
-            currentLang = 'vi';
+            state.currentLang = 'vi';
             await showMenu();
-        }),
+        }, true),
         createButton(2, ui.booting.lang2.replace('[2] ', ''), async () => {
-            if (isTyping) return;
+            if (state.isTyping) return;
             await addLine(`<span class="user-prompt guest">@guest</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> 2`, 'command');
-            currentLang = 'en';
+            state.currentLang = 'en';
             await showMenu();
-        }),
+        }, true),
         createButton(3, ui.booting.lang3.replace('[3] ', ''), async () => {
-            if (isTyping) return;
+            if (state.isTyping) return;
             await addLine(`<span class="user-prompt guest">@guest</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> 3`, 'command');
-            currentLang = 'ja';
+            state.currentLang = 'ja';
             await showMenu();
-        })
+        }, true)
     ];
-    showActionButtons(buttons);
+    showActionButtons(buttons, 'language');
 }
 
 async function showMenu() {
-    state = 'menu';
+    state.appState = 'menu';
     clearTerminal();
     const ui = getUI();
     
@@ -400,21 +487,35 @@ async function showMenu() {
 
 function showMenuButtons() {
     const ui = getUI();
+    const menuHandlers = {
+        1: showAbout,
+        2: showProjects,
+        3: showActivity,
+        4: showGames,
+        5: showQuote,
+        6: showDiscord,
+        7: showRelationship,
+        8: showLanguageMenu,
+        9: showReturnToGUI
+    };
+    
     const buttons = ui.menu.map(item => {
         return createButton(item.num, item.title, async () => {
-            if (isTyping) return;
+            if (state.isTyping) return;
             await addLine(`<span class="user-prompt guest">@guest</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${item.num}`, 'command');
             
-            if (item.num === 9) {
-                await showReturnToGUI();
-            } else {
-                const menuFuncs = [showAbout, showProjects, showActivity, showGames, showQuote, showDiscord, showRelationship, showLanguageMenu];
-                await menuFuncs[item.num - 1]();
+            const handler = menuHandlers[item.num];
+            if (handler) {
+                await handler();
             }
-        });
+        }, false, true);
     });
-    showActionButtons(buttons);
+    showActionButtons(buttons, 'menu');
 }
+
+// ============================================
+// Content Functions
+// ============================================
 
 async function showAbout() {
     clearTerminal();
@@ -462,28 +563,18 @@ async function showAbout() {
         ['', '']
     ];
     
-    aboutText[currentLang].forEach(line => {
+    aboutText[state.currentLang].forEach(line => {
         lines.push([line, 'output', true, 1.5]);
     });
     
     lines.push(['', '']);
-    lines.push(['────────────────────────────────────────', 'prompt', true, 1.5]);
+    lines.push([createSeparator(), 'prompt', true, 1.5]);
     lines.push(['', '']);
     lines.push([ui.booting.returnMenu, 'highlight', true, 1.5]);
     
     await addLines(lines);
-    state = 'waiting';
-    showMenuButton();
-}
-
-function showMenuButton() {
-    const buttons = [
-        createButton('Menu', 'Return to Menu', async () => {
-            if (isTyping) return;
-            await showMenu();
-        })
-    ];
-    showActionButtons(buttons);
+    state.appState = 'waiting';
+    showReturnMenuButton();
 }
 
 async function showProjects() {
@@ -521,21 +612,11 @@ async function showProjects() {
     }
     
     await addLine('', '');
-    await addLine('────────────────────────────────────────', 'prompt', true, 1.5);
+    await addLine(createSeparator(), 'prompt', true, 1.5);
     await addLine('', '');
     await addLine(ui.booting.returnMenu, 'highlight', true, 1.5);
-    state = 'waiting';
-    showMenuButton();
-}
-
-function showMenuButton() {
-    const buttons = [
-        createButton('Menu', 'Return to Menu', async () => {
-            if (isTyping) return;
-            await showMenu();
-        })
-    ];
-    showActionButtons(buttons);
+    state.appState = 'waiting';
+    showReturnMenuButton();
 }
 
 async function showActivity() {
@@ -643,21 +724,11 @@ async function showActivity() {
         await addLine('', '');
     }
     
-    await addLine('────────────────────────────────────────', 'prompt', true, 1.5);
+    await addLine(createSeparator(), 'prompt', true, 1.5);
     await addLine('', '');
-    await addLine(getUI().booting.returnMenu, 'highlight', true, 1.5);
-    state = 'waiting';
-    showMenuButton();
-}
-
-function showMenuButton() {
-    const buttons = [
-        createButton('Menu', 'Return to Menu', async () => {
-            if (isTyping) return;
-            await showMenu();
-        })
-    ];
-    showActionButtons(buttons);
+    await addLine(ui.booting.returnMenu, 'highlight', true, 1.5);
+    state.appState = 'waiting';
+    showReturnMenuButton();
 }
 
 async function showGames() {
@@ -698,21 +769,11 @@ async function showGames() {
     
     terminalOutput.appendChild(gameGrid);
     await addLine('', '');
-    await addLine('────────────────────────────────────────', 'prompt', true, 1.5);
+    await addLine(createSeparator(), 'prompt', true, 1.5);
     await addLine('', '');
-    await addLine(getUI().booting.returnMenu, 'highlight', true, 1.5);
-    state = 'waiting';
-    showMenuButton();
-}
-
-function showMenuButton() {
-    const buttons = [
-        createButton('Menu', 'Return to Menu', async () => {
-            if (isTyping) return;
-            await showMenu();
-        })
-    ];
-    showActionButtons(buttons);
+    await addLine(ui.booting.returnMenu, 'highlight', true, 1.5);
+    state.appState = 'waiting';
+    showReturnMenuButton();
 }
 
 async function showQuote() {
@@ -728,24 +789,14 @@ async function showQuote() {
         ['', ''],
         [`<div class="quote-box">${quote.text}<div class="quote-author">${quote.author}</div></div>`, 'output', true, 1.5],
         ['', ''],
-        ['────────────────────────────────────────', 'prompt', true, 1.5],
+        [createSeparator(), 'prompt', true, 1.5],
         ['', ''],
         [ui.booting.returnMenu, 'highlight', true, 1.5]
     ];
     
     await addLines(lines);
-    state = 'waiting';
-    showMenuButton();
-}
-
-function showMenuButton() {
-    const buttons = [
-        createButton('Menu', 'Return to Menu', async () => {
-            if (isTyping) return;
-            await showMenu();
-        })
-    ];
-    showActionButtons(buttons);
+    state.appState = 'waiting';
+    showReturnMenuButton();
 }
 
 async function showDiscord() {
@@ -761,24 +812,14 @@ async function showDiscord() {
         ['<a href="https://discord.gg/25pTutE3ky" target="_blank">Join Server →</a>', 'output', true, 1.5],
         ['<a href="https://chivy2306.github.io/Teratory/" target="_blank">Learn More →</a>', 'output', true, 1.5],
         ['', ''],
-        ['────────────────────────────────────────', 'prompt', true, 1.5],
+        [createSeparator(), 'prompt', true, 1.5],
         ['', ''],
         [ui.booting.returnMenu, 'highlight', true, 1.5]
     ];
     
     await addLines(lines);
-    state = 'waiting';
-    showMenuButton();
-}
-
-function showMenuButton() {
-    const buttons = [
-        createButton('Menu', 'Return to Menu', async () => {
-            if (isTyping) return;
-            await showMenu();
-        })
-    ];
-    showActionButtons(buttons);
+    state.appState = 'waiting';
+    showReturnMenuButton();
 }
 
 async function showRelationship() {
@@ -792,24 +833,14 @@ async function showRelationship() {
         ['', ''],
         [`<span class="highlight" style="font-size: 24px; font-weight: bold;">${ui.booting.relationshipStatus}</span>`, 'output', true, 1.5],
         ['', ''],
-        ['────────────────────────────────────────', 'prompt', true, 1.5],
+        [createSeparator(), 'prompt', true, 1.5],
         ['', ''],
         [ui.booting.returnMenu, 'highlight', true, 1.5]
     ];
     
     await addLines(lines);
-    state = 'waiting';
-    showMenuButton();
-}
-
-function showMenuButton() {
-    const buttons = [
-        createButton('Menu', 'Return to Menu', async () => {
-            if (isTyping) return;
-            await showMenu();
-        })
-    ];
-    showActionButtons(buttons);
+    state.appState = 'waiting';
+    showReturnMenuButton();
 }
 
 async function showLanguageMenu() {
@@ -829,7 +860,7 @@ async function showLanguageMenu() {
     ];
     
     await addLines(lines);
-    state = 'language';
+    state.appState = 'language';
     showLanguageButtons();
 }
 
@@ -873,12 +904,76 @@ function showGUI() {
     document.querySelector('.terminal-wrapper').appendChild(gui);
 }
 
+// ============================================
+// Event Listeners & Initialization
+// ============================================
+
 redDot.addEventListener('click', () => {
-    if (!isTyping) {
+    if (!state.isTyping) {
         closeTerminal();
     }
 });
 
+redDot.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (!state.isTyping) {
+        if (navigator.vibrate) {
+            navigator.vibrate(20);
+        }
+        closeTerminal();
+    }
+}, { passive: false });
+
+// Swipe gesture support
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+const terminalContainer = document.querySelector('.terminal-container');
+
+terminalContainer.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+
+terminalContainer.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipe();
+}, { passive: true });
+
+function handleSwipe() {
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    const minSwipeDistance = 50;
+    
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+        if (deltaX > 0 && state.appState !== 'menu' && state.appState !== 'booting' && state.appState !== 'language' && !state.isTyping) {
+            if (state.appState === 'waiting') {
+                showMenu();
+            }
+        }
+    }
+}
+
+// Prevent zoom on double tap
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+    }
+    lastTouchEnd = now;
+}, { passive: false });
+
+// Initialize terminal
 document.addEventListener('DOMContentLoaded', () => {
-    showBooting();
+    terminalOutput.classList.add('loading');
+    
+    setTimeout(() => {
+        terminalOutput.classList.remove('loading');
+        showBooting();
+    }, 100);
 });
+
