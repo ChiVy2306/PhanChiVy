@@ -1,40 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* =================================================================
-   Color Palette - Cosmic Night Theme
+   Color Palette - Minimal Grey Theme
    ================================================================= */
 :root {
-    /* Base colors */
-    --bg-deep: #0a0a0f;
-    --bg-main: #12121a;
-    --bg-elevated: #1a1a25;
-    
-    /* Card colors with glassmorphism */
-    --card-bg: rgba(25, 25, 40, 0.6);
-    --card-bg-solid: #191928;
-    --card-border: rgba(255, 255, 255, 0.08);
-    --card-glow: rgba(139, 92, 246, 0.15);
-    
+    /* Base colors - Blue-Grey */
+    --bg-deep: #0d1117;
+    --bg-main: #161b22;
+    --bg-elevated: #21262d;
+
+    /* Card colors - Subtle transparency */
+    --card-bg: rgba(88, 166, 255, 0.03);
+    --card-bg-solid: #161b22;
+    --card-border: rgba(88, 166, 255, 0.12);
+    --card-glow: rgba(88, 166, 255, 0.08);
+
     /* Text colors */
-    --text-primary: #f4f4f8;
-    --text-secondary: rgba(244, 244, 248, 0.7);
-    --text-muted: rgba(244, 244, 248, 0.5);
-    
-    /* Accent colors - Aurora Gradient */
-    --accent-1: #8b5cf6; /* Violet */
-    --accent-2: #06b6d4; /* Cyan */
-    --accent-3: #f472b6; /* Pink */
-    --accent-4: #34d399; /* Emerald */
-    
-    /* Gradient presets */
-    --gradient-aurora: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
-    --gradient-subtle: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
-    --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-    
+    --text-primary: #e8eaed;
+    --text-secondary: rgba(232, 234, 237, 0.7);
+    --text-muted: rgba(232, 234, 237, 0.45);
+
+    /* Accent - Blue */
+    --accent-1: #58a6ff;
+    --accent-2: rgba(88, 166, 255, 0.75);
+    --accent-3: rgba(88, 166, 255, 0.5);
+    --accent-4: rgba(88, 166, 255, 0.25);
+
+    /* Gradient presets - Blue tinted */
+    --gradient-aurora: linear-gradient(135deg, rgba(88, 166, 255, 0.15), rgba(88, 166, 255, 0.05));
+    --gradient-subtle: linear-gradient(135deg, rgba(88, 166, 255, 0.05), rgba(88, 166, 255, 0.02));
+    --gradient-card: linear-gradient(145deg, rgba(88, 166, 255, 0.04), rgba(88, 166, 255, 0.01));
+
     /* Special */
-    --name-glow: #f472b6;
-    --shadow-color: rgba(0, 0, 0, 0.4);
-    
+    --name-glow: rgba(88, 166, 255, 0.6);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+
     /* Animation speeds */
     --transition-fast: 0.2s;
     --transition-normal: 0.3s;
@@ -44,7 +44,9 @@
 /* =================================================================
    Reset & Base Styles
    ================================================================= */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -54,11 +56,11 @@
 html {
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-1) var(--bg-deep);
+    scrollbar-color: rgba(255, 255, 255, 0.2) var(--bg-deep);
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -66,8 +68,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
-    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
 }
 
 body {
@@ -83,7 +89,7 @@ body {
 }
 
 /* =================================================================
-   Animated Background
+   Minimal Background
    ================================================================= */
 body::before {
     content: '';
@@ -92,30 +98,22 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(139, 92, 246, 0.15), transparent),
-        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(6, 182, 212, 0.1), transparent),
-        radial-gradient(ellipse 50% 30% at 50% 80%, rgba(244, 114, 182, 0.08), transparent);
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
     pointer-events: none;
     z-index: -2;
-    animation: bgShift 20s ease-in-out infinite;
 }
 
-@keyframes bgShift {
-    0%, 100% { opacity: 1; filter: hue-rotate(0deg); }
-    50% { opacity: 0.8; filter: hue-rotate(15deg); }
-}
-
-/* Floating particles background */
+/* Hide animated particles for minimal look */
 body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.3), transparent),
+    display: none;
+}
+
+/* Hide stars */
+.star {
+    display: none;
+}
+
+/* =================================================================
         radial-gradient(2px 2px at 40% 70%, rgba(139,92,246,0.4), transparent),
         radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.3), transparent),
         radial-gradient(2px 2px at 60% 20%, rgba(6,182,212,0.4), transparent),
@@ -172,12 +170,15 @@ body::after {
 }
 
 @keyframes starBlink {
-    0%, 100% { 
-        opacity: 0.2; 
+
+    0%,
+    100% {
+        opacity: 0.2;
         transform: scale(0.8);
     }
-    50% { 
-        opacity: 1; 
+
+    50% {
+        opacity: 1;
         transform: scale(1.2);
     }
 }
@@ -199,71 +200,94 @@ body::after {
 }
 
 /* =================================================================
-   Navigation
+   Navigation - Professional
    ================================================================= */
 #navbar {
     position: fixed;
-    top: 15px;
+    top: 24px;
     left: 50%;
     transform: translateX(-50%) translateY(0);
-    width: min(700px, 90%);
-    background: rgba(18, 18, 26, 0.7);
+    width: min(720px, 92%);
+    background: rgba(13, 17, 23, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    padding: 12px 25px;
-    border-radius: 50px;
-    border: 1px solid var(--card-border);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    padding: 8px 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(88, 166, 255, 0.1);
     z-index: 1000;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 }
 
-/* Scrolled state - added via JS */
+/* Scrolled state - compact & elevated */
 #navbar.scrolled {
-    top: 10px;
-    background: rgba(18, 18, 26, 0.95);
-    border-color: rgba(139, 92, 246, 0.2);
-    box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(139, 92, 246, 0.1);
-    padding: 10px 25px;
+    top: 12px;
+    width: min(680px, 90%);
+    padding: 6px 10px;
+    background: rgba(13, 17, 23, 0.85);
+    border-color: rgba(88, 166, 255, 0.15);
+    border-radius: 14px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+        0 0 20px rgba(88, 166, 255, 0.05);
+}
+
+/* Hidden state when scrolling down */
+#navbar.hidden {
+    transform: translateX(-50%) translateY(-120%);
+    opacity: 0;
 }
 
 #navbar:hover {
-    border-color: rgba(139, 92, 246, 0.3);
-    box-shadow: 
-        0 4px 40px rgba(139, 92, 246, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border-color: rgba(88, 166, 255, 0.2);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+        0 0 30px rgba(88, 166, 255, 0.08);
 }
 
 .nav-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 4px;
 }
 
 .nav-link {
     color: var(--text-secondary);
     text-decoration: none;
-    padding: 8px 18px;
-    border-radius: 25px;
+    padding: 10px 20px;
+    border-radius: 10px;
     font-weight: 500;
-    font-size: 14px;
-    letter-spacing: 0.3px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    overflow: hidden;
+    background: transparent;
+    border: 1px solid transparent;
 }
 
 .nav-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(88, 166, 255, 0.12), rgba(88, 166, 255, 0.04));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.nav-link::after {
     content: '';
     position: absolute;
     bottom: 6px;
     left: 50%;
     width: 0;
     height: 2px;
-    background: var(--gradient-aurora);
+    background: linear-gradient(90deg, transparent, var(--accent-1), transparent);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateX(-50%);
     border-radius: 2px;
@@ -271,171 +295,133 @@ body::after {
 
 .nav-link:hover {
     color: var(--text-primary);
-    transform: translateY(-1px);
+    border-color: rgba(88, 166, 255, 0.15);
 }
 
 .nav-link:hover::before {
+    opacity: 1;
+}
+
+.nav-link:hover::after {
     width: 60%;
 }
 
 /* Active nav link */
 .nav-link.active {
-    color: var(--text-primary);
+    color: var(--accent-1);
+    background: rgba(88, 166, 255, 0.08);
+    border-color: rgba(88, 166, 255, 0.2);
 }
 
-.nav-link.active::before {
-    width: 60%;
+.nav-link.active::after {
+    width: 50%;
+    background: var(--accent-1);
 }
 
-.nav-content .nav-link {
-    margin-right: 8px;
-}
-
-.nav-content .nav-link:last-of-type {
-    margin-right: auto;
+/* Nav divider */
+.nav-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 0 8px;
 }
 
 .language-switcher {
     display: flex;
-    gap: 4px;
-    padding: 4px 6px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 2px;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    margin-left: 8px;
 }
 
 .lang-btn {
     border: none;
     background: transparent;
-    font-size: 18px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 15px;
+    cursor: url('https://cdn.custom-cursor.com/db/23014/32/minimal-stingray-cursor.png'), pointer;
+    transition: all 0.2s ease;
     opacity: 0.4;
-    padding: 6px 10px;
-    border-radius: 20px;
+    padding: 6px 8px;
+    border-radius: 8px;
     position: relative;
 }
 
 .lang-btn:hover {
-    transform: scale(1.1) translateY(-1px);
-    opacity: 0.7;
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .lang-btn.active {
     opacity: 1;
-    transform: scale(1.1);
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(6, 182, 212, 0.2));
-    box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+    background: rgba(88, 166, 255, 0.15);
 }
 
 /* Language switch animation */
 .lang-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: var(--gradient-aurora);
-    opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.3s ease;
-}
-
-.lang-btn.active::after {
-    opacity: 0.15;
-    transform: scale(1);
+    display: none;
 }
 
 /* =================================================================
-   Main Container
+   Main Container - Minimal
    ================================================================= */
 #container {
-    width: min(1100px, 92%);
+    width: min(1000px, 92%);
     min-height: 100vh;
     margin: 90px auto 40px;
-    background: linear-gradient(180deg, var(--card-bg), rgba(18, 18, 26, 0.9));
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 30px;
-    border: 1px solid var(--card-border);
-    box-shadow: 
-        0 25px 80px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    overflow: hidden;
-    animation: containerFadeIn 0.8s ease-out;
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    overflow: visible;
+    animation: containerFadeIn 0.6s ease-out;
 }
 
 @keyframes containerFadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(30px) scale(0.98); 
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-    to { 
-        opacity: 1; 
-        transform: translateY(0) scale(1); 
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
 /* =================================================================
-   Header Section
+   Header Section - Minimal
    ================================================================= */
 header {
     width: 100%;
-    min-height: 220px;
-    background: 
-        linear-gradient(135deg, 
-            rgba(139, 92, 246, 0.4) 0%, 
-            rgba(6, 182, 212, 0.3) 50%, 
-            rgba(244, 114, 182, 0.3) 100%);
+    min-height: 180px;
+    background: rgba(255, 255, 255, 0.02);
     position: relative;
     display: flex;
     align-items: center;
     padding: 30px 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     overflow: visible;
 }
 
-/* Animated gradient overlay */
-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: 
-        linear-gradient(45deg, 
-            transparent 30%, 
-            rgba(255, 255, 255, 0.05) 50%, 
-            transparent 70%);
-    background-size: 200% 200%;
-    animation: headerShine 8s ease-in-out infinite;
-}
-
-@keyframes headerShine {
-    0%, 100% { background-position: -100% -100%; }
-    50% { background-position: 200% 200%; }
-}
-
-/* Mesh pattern overlay */
+/* Remove animated overlays */
+header::before,
 header::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: 
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 50px 50px;
-    opacity: 0.5;
-    pointer-events: none;
+    display: none;
 }
 
 /* =================================================================
-   Profile Picture
+   Profile Picture - Minimal
    ================================================================= */
 #profile-pic {
-    width: 160px;
-    height: 160px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     position: relative;
     z-index: 10;
     margin: 0 35px;
     flex-shrink: 0;
+    overflow: visible;
 }
 
 #profile-pic img {
@@ -443,67 +429,38 @@ header::after {
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
-    border: 3px solid rgba(255, 255, 255, 0.2);
     position: relative;
-    z-index: 3;
-    transition: all var(--transition-slow) ease;
-}
-
-#profile-pic:hover img {
-    border-color: var(--accent-3);
-    transform: scale(1.02);
-}
-
-/* Glowing ring effect */
-#profile-pic::before {
-    content: '';
-    position: absolute;
-    inset: -8px;
-    border-radius: 50%;
-    background: conic-gradient(
-        from 0deg,
-        var(--accent-1),
-        var(--accent-2),
-        var(--accent-3),
-        var(--accent-4),
-        var(--accent-1)
-    );
-    opacity: 0.8;
     z-index: 1;
-    animation: ringRotate 4s linear infinite;
-    filter: blur(3px);
+    transition: all 0.3s ease;
 }
 
-#profile-pic::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    background: var(--bg-main);
-    z-index: 2;
-}
-
-@keyframes ringRotate {
-    to { transform: rotate(360deg); }
-}
-
-/* Avatar decoration */
+/* Avatar decoration - must be on top */
 #profile-pic .avatar-deco {
     position: absolute;
-    inset: -12px;
-    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    width: 180px;
+    height: 180px;
+    transform: translate(-50%, -50%);
     background-image: url('../img/avatar_decoration.png');
-    background-size: 115%;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    z-index: 5;
+    z-index: 100;
     pointer-events: none;
     animation: decoFloat 6s ease-in-out infinite;
 }
 
 @keyframes decoFloat {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(3deg) scale(1.02); }
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) rotate(3deg) scale(1.02);
+    }
 }
 
 /* =================================================================
@@ -532,20 +489,15 @@ header::after {
 }
 
 #typewriter {
-    color: var(--name-glow);
+    color: var(--accent-1);
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
     font-style: italic;
-    text-shadow: 
-        0 0 20px rgba(244, 114, 182, 0.5),
-        0 0 40px rgba(244, 114, 182, 0.3);
-    animation: textGlow 2s ease-in-out infinite alternate;
+    -webkit-text-stroke: 1px rgba(88, 166, 255, 0.6);
+    text-shadow: none;
 }
 
-@keyframes textGlow {
-    from { text-shadow: 0 0 20px rgba(244, 114, 182, 0.5), 0 0 40px rgba(244, 114, 182, 0.3); }
-    to { text-shadow: 0 0 25px rgba(244, 114, 182, 0.7), 0 0 50px rgba(244, 114, 182, 0.4); }
-}
+/* Remove the glow animation for cleaner border look */
 
 .desuwa {
     font-style: italic;
@@ -572,7 +524,8 @@ main {
     background: linear-gradient(180deg, transparent, rgba(10, 10, 15, 0.5));
 }
 
-#left-box, #right-box {
+#left-box,
+#right-box {
     width: calc(50% - 12.5px);
     display: flex;
     flex-direction: column;
@@ -614,34 +567,49 @@ main {
 /* =================================================================
    Card Styles (Glassmorphism)
    ================================================================= */
-#aboutme, #github, #activity, #love-status, #quote, #guild, #game {
+#aboutme,
+#github,
+#activity,
+#love-status,
+#quote,
+#guild,
+#game {
     background: var(--card-bg);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-radius: 20px;
     padding: 25px;
     border: 1px solid var(--card-border);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     transition: all var(--transition-normal) ease;
     position: relative;
     overflow: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 /* Card hover effects */
-#aboutme:hover, #github:hover, #activity:hover, 
-#love-status:hover, #quote:hover, #guild:hover, #game:hover {
+#aboutme:hover,
+#github:hover,
+#activity:hover,
+#love-status:hover,
+#quote:hover,
+#guild:hover,
+#game:hover {
     transform: translateY(-3px);
     border-color: rgba(139, 92, 246, 0.3);
-    box-shadow: 
-        0 15px 40px rgba(139, 92, 246, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.15);
 }
 
 /* Card gradient accent on hover */
-#aboutme::before, #github::before, #activity::before, 
-#love-status::before, #quote::before, #guild::before, #game::before {
+#aboutme::before,
+#github::before,
+#activity::before,
+#love-status::before,
+#quote::before,
+#guild::before,
+#game::before {
     content: '';
     position: absolute;
     top: 0;
@@ -653,14 +621,24 @@ main {
     transition: opacity var(--transition-normal);
 }
 
-#aboutme:hover::before, #github:hover::before, #activity:hover::before, 
-#love-status:hover::before, #quote:hover::before, #guild:hover::before, #game:hover::before {
+#aboutme:hover::before,
+#github:hover::before,
+#activity:hover::before,
+#love-status:hover::before,
+#quote:hover::before,
+#guild:hover::before,
+#game:hover::before {
     opacity: 1;
 }
 
 /* Section titles */
-#aboutme h2, #github h3, #activity h3, #love-status h3, 
-#quote h3, #guild h3, #game h3 {
+#aboutme h2,
+#github h3,
+#activity h3,
+#love-status h3,
+#quote h3,
+#guild h3,
+#game h3 {
     color: var(--text-primary);
     margin-bottom: 18px;
     font-weight: 600;
@@ -671,14 +649,15 @@ main {
 
 #aboutme h2 {
     font-size: 24px;
-    background: var(--gradient-aurora);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
 }
 
-#github h3, #activity h3, #love-status h3, 
-#quote h3, #guild h3, #game h3 {
+#github h3,
+#activity h3,
+#love-status h3,
+#quote h3,
+#guild h3,
+#game h3 {
     font-size: 17px;
 }
 
@@ -703,16 +682,18 @@ main {
 /* =================================================================
    GitHub & Activity Row
    ================================================================= */
-#github, #activity, #love-status {
+#github,
+#activity,
+#love-status {
     width: 100%;
     float: none;
     margin: 0;
 }
 
 /* For the row layout */
-#left-box > div:nth-child(2),
-#left-box > div:nth-child(3),
-#left-box > div:nth-child(4) {
+#left-box>div:nth-child(2),
+#left-box>div:nth-child(3),
+#left-box>div:nth-child(4) {
     width: 100%;
 }
 
@@ -721,42 +702,58 @@ main {
     margin-bottom: 15px;
 }
 
-#github-repos > div {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--card-border);
+#github-repos>div {
+    background: rgba(88, 166, 255, 0.04);
+    border: 1px solid rgba(88, 166, 255, 0.12);
     border-radius: 12px;
     padding: 14px;
     margin-bottom: 10px;
     transition: all var(--transition-normal);
 }
 
-#github-repos > div:hover {
-    background: rgba(139, 92, 246, 0.1);
-    border-color: rgba(139, 92, 246, 0.3);
+#github-repos>div:hover {
+    background: rgba(88, 166, 255, 0.08);
+    border-color: rgba(88, 166, 255, 0.25);
+    transform: translateX(4px);
 }
 
 #github-repos strong {
-    color: var(--accent-2);
+    color: var(--accent-1);
+    font-size: 14px;
+}
+
+#github-repos p {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+#github-repos .repo-stats {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 6px;
 }
 
 .github-link {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--gradient-aurora);
-    color: white;
+    background: rgba(88, 166, 255, 0.12);
+    color: var(--accent-1);
     padding: 10px 22px;
     border-radius: 25px;
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
+    border: 1px solid rgba(88, 166, 255, 0.2);
     transition: all var(--transition-normal);
-    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .github-link:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4);
+    background: rgba(88, 166, 255, 0.18);
+    border-color: rgba(88, 166, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(88, 166, 255, 0.15);
 }
 
 /* Activity */
@@ -854,7 +851,8 @@ main {
 
 .activity-info {
     flex: 1;
-    min-width: 0; /* Allow text truncation */
+    min-width: 0;
+    /* Allow text truncation */
     text-align: left;
 }
 
@@ -942,7 +940,7 @@ main {
 /* Love Status - Enhanced */
 #love-status {
     text-align: center;
-    background: 
+    background:
         linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(139, 92, 246, 0.08)),
         var(--card-bg) !important;
     border-color: rgba(244, 114, 182, 0.25) !important;
@@ -964,13 +962,22 @@ main {
 }
 
 @keyframes loveGlow {
-    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-    50% { transform: translate(10%, 10%) scale(1.1); opacity: 0.8; }
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translate(10%, 10%) scale(1.1);
+        opacity: 0.8;
+    }
 }
 
 #love-status:hover {
     border-color: rgba(244, 114, 182, 0.5) !important;
-    box-shadow: 
+    box-shadow:
         0 15px 40px rgba(244, 114, 182, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
 }
@@ -1011,6 +1018,7 @@ main {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1052,21 +1060,37 @@ main {
 }
 
 @keyframes floatHeart {
-    0%, 100% { 
-        transform: translateY(0) rotate(-10deg) scale(1); 
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(-10deg) scale(1);
         opacity: 0.4;
     }
-    50% { 
-        transform: translateY(-15px) rotate(10deg) scale(1.1); 
+
+    50% {
+        transform: translateY(-15px) rotate(10deg) scale(1.1);
         opacity: 0.8;
     }
 }
 
 @keyframes heartPulse {
-    0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.3); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.25); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    15% {
+        transform: scale(1.3);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.25);
+    }
 }
 
 .status-text {
@@ -1084,15 +1108,22 @@ main {
 }
 
 @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 /* =================================================================
    Quote Section
    ================================================================= */
 #quote {
-    background: 
+    background:
         linear-gradient(135deg, rgba(139, 92, 246, 0.1), transparent),
         var(--card-bg);
 }
@@ -1194,12 +1225,15 @@ main {
     font-weight: 500;
     color: var(--text-secondary);
     position: relative;
-    cursor: default;
+    cursor: url('https://cdn.custom-cursor.com/db/23014/32/minimal-stingray-cursor.png'), auto;
     transition: border-color 0.2s ease, color 0.2s ease;
     min-height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    will-change: border-color;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .game-item:hover {
@@ -1208,7 +1242,7 @@ main {
 }
 
 .game-item.copyable {
-    cursor: copy;
+    cursor: url('https://cdn.custom-cursor.com/db/23014/32/minimal-stingray-cursor.png'), copy;
 }
 
 .game-item.copied {
@@ -1234,11 +1268,21 @@ main {
     white-space: nowrap;
     z-index: 100;
     animation: tooltipPop 0.2s ease-out;
+    pointer-events: none;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
 }
 
 @keyframes tooltipPop {
-    from { opacity: 0; transform: translateX(-50%) translateY(5px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
 }
 
 /* =================================================================
@@ -1313,9 +1357,17 @@ main {
     border-radius: 50%;
 }
 
-.terminal-dot.red { background: #ff5f57; }
-.terminal-dot.yellow { background: #ffbd2e; }
-.terminal-dot.green { background: #28c840; }
+.terminal-dot.red {
+    background: #ff5f57;
+}
+
+.terminal-dot.yellow {
+    background: #ffbd2e;
+}
+
+.terminal-dot.green {
+    background: #28c840;
+}
 
 .terminal-title {
     margin-left: 10px;
@@ -1363,14 +1415,27 @@ main {
 }
 
 @keyframes cursorBlink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
 }
 
 /* Typewriter animation for each character */
 @keyframes typewriter {
-    from { width: 0; }
-    to { width: 100%; }
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
 }
 
 .terminal-line.prompt {
@@ -1472,75 +1537,40 @@ main {
 }
 
 /* =================================================================
-   Custom Cursor
+   Custom Cursor - Stingray
    ================================================================= */
-.cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--accent-1);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 99999;
-    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
-    transform: translate(-50%, -50%);
-    mix-blend-mode: difference;
-}
-
-.cursor.hover {
-    width: 50px;
-    height: 50px;
-    background: rgba(139, 92, 246, 0.2);
-    border-color: var(--accent-2);
-}
-
-.cursor.click {
-    transform: translate(-50%, -50%) scale(0.8);
-}
-
-/* Cursor dot */
-.cursor-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--accent-1);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 99999;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.2s ease;
-}
-
-/* Cursor trail */
-.cursor-trail {
-    width: 8px;
-    height: 8px;
-    background: var(--accent-1);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 99998;
-    opacity: 0.3;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.5s ease;
-}
-
-/* Hide default cursor */
+/* Stingray cursor for desktop */
 body {
-    cursor: none;
+    cursor: url('https://cdn.custom-cursor.com/db/23014/32/minimal-stingray-cursor.png'), auto;
 }
 
-a, button, input, .game-item, .nav-link, .lang-btn, .guild-btn, .github-link, .gaming-link {
-    cursor: none;
+a,
+button,
+input,
+.game-item,
+.nav-link,
+.lang-btn,
+.guild-btn,
+.github-link,
+.gaming-link {
+    cursor: url('https://cdn.custom-cursor.com/db/23014/32/minimal-stingray-cursor.png'), pointer;
 }
 
 /* Show default cursor on mobile */
-@media (max-width: 768px) {
-    body, a, button, input, .game-item, .nav-link, .lang-btn, .guild-btn, .github-link, .gaming-link {
+@media (max-width: 768px),
+(pointer: coarse) {
+
+    body,
+    a,
+    button,
+    input,
+    .game-item,
+    .nav-link,
+    .lang-btn,
+    .guild-btn,
+    .github-link,
+    .gaming-link {
         cursor: auto;
-    }
-    .cursor, .cursor-dot, .cursor-trail {
-        display: none !important;
     }
 }
 
@@ -1580,7 +1610,7 @@ footer {
     color: var(--text-secondary);
 }
 
-footer > div {
+footer>div {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1646,7 +1676,9 @@ footer a:hover {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* =================================================================
@@ -1658,49 +1690,51 @@ footer a:hover {
         margin: 80px auto 30px;
         border-radius: 20px 20px 0 0;
     }
-    
+
     main {
         flex-direction: column;
         padding: 20px;
         gap: 20px;
     }
-    
-    #left-box, #right-box {
+
+    #left-box,
+    #right-box {
         width: 100%;
     }
-    
+
     header {
         flex-direction: column;
         padding: 30px 25px;
         text-align: center;
         min-height: auto;
     }
-    
+
     #profile-pic {
         margin: 0 0 20px 0;
     }
-    
+
     #smol-aboutme {
         justify-content: center;
         padding: 0;
     }
-    
+
     .intro-text {
         text-align: center;
     }
-    
+
     .tagline {
         margin: 0 auto;
     }
-    
+
     /* Terminal adjustments for tablets */
     .terminal-body {
         font-size: 13px;
         min-height: 300px;
     }
-    
+
     /* Better spacing */
-    #left-box, #right-box {
+    #left-box,
+    #right-box {
         gap: 18px;
     }
 }
@@ -1711,49 +1745,56 @@ footer a:hover {
         width: 98%;
         padding: 8px 12px;
     }
-    
+
     .nav-link {
         padding: 6px 10px;
         font-size: 11px;
     }
-    
+
     #container {
         width: 100%;
         margin: 70px 0 0 0;
         border-radius: 0;
     }
-    
+
     header {
         padding: 20px 15px;
     }
-    
+
     #profile-pic {
         width: 110px;
         height: 110px;
     }
-    
+
     .greeting {
         font-size: 18px;
     }
-    
+
     main {
         padding: 15px;
         gap: 15px;
     }
-    
-    #aboutme, #github, #activity, #love-status, #quote, #guild, #game, #terminal-faq {
+
+    #aboutme,
+    #github,
+    #activity,
+    #love-status,
+    #quote,
+    #guild,
+    #game,
+    #terminal-faq {
         padding: 15px;
     }
-    
+
     .game-grid {
         gap: 6px;
     }
-    
+
     .game-item {
         padding: 10px 6px;
         font-size: 10px;
     }
-    
+
     .terminal-body {
         padding: 10px;
         font-size: 11px;
@@ -1767,12 +1808,12 @@ footer a:hover {
         border-radius: 30px;
         top: 10px;
     }
-    
+
     .nav-content {
         flex-wrap: wrap;
         gap: 6px;
     }
-    
+
     .nav-link {
         padding: 8px 14px;
         font-size: 12px;
@@ -1781,7 +1822,7 @@ footer a:hover {
         align-items: center;
         touch-action: manipulation;
     }
-    
+
     .lang-btn {
         font-size: 16px;
         padding: 8px 12px;
@@ -1789,37 +1830,37 @@ footer a:hover {
         min-height: 44px;
         touch-action: manipulation;
     }
-    
+
     #profile-pic {
         width: 130px;
         height: 130px;
     }
-    
+
     .greeting {
         font-size: 20px;
     }
-    
+
     .tagline {
         font-size: 13px;
     }
-    
+
     .game-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
     }
-    
+
     .game-item {
         padding: 12px 8px;
         font-size: 11px;
         min-height: 48px;
         touch-action: manipulation;
     }
-    
+
     .guild-buttons {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .guild-btn {
         width: 100%;
         justify-content: center;
@@ -1827,84 +1868,91 @@ footer a:hover {
         min-height: 48px;
         touch-action: manipulation;
     }
-    
+
     .github-link {
         padding: 14px 20px;
         min-height: 48px;
         touch-action: manipulation;
     }
-    
+
     /* Terminal improvements for mobile */
     #terminal-faq {
         padding: 15px;
         min-height: 300px;
     }
-    
+
     .terminal-body {
         padding: 12px;
         font-size: 12px;
         min-height: 250px;
         line-height: 1.6;
     }
-    
+
     .terminal-input-line {
         padding: 10px 12px;
     }
-    
+
     .terminal-input-line::before {
         font-size: 12px;
     }
-    
+
     .terminal-input {
         font-size: 12px;
         min-height: 44px;
     }
-    
+
     .terminal-line.answer {
         padding-left: 12px;
         font-size: 11px;
     }
-    
+
     .terminal-line.question {
         font-size: 11px;
         padding-left: 4px;
     }
-    
+
     /* Activity improvements */
     .activity-item {
         padding: 10px 12px;
         gap: 10px;
     }
-    
+
     .activity-name {
         font-size: 12px;
     }
-    
+
     .activity-details {
         font-size: 10px;
     }
-    
+
     .album-art {
         width: 35px;
         height: 35px;
     }
-    
+
     .discord-avatar {
         width: 40px;
         height: 40px;
     }
-    
+
     /* Card padding reduction */
-    #aboutme, #github, #activity, #love-status, #quote, #guild, #game, #terminal-faq {
+    #aboutme,
+    #github,
+    #activity,
+    #love-status,
+    #quote,
+    #guild,
+    #game,
+    #terminal-faq {
         padding: 18px;
     }
-    
+
     /* Footer improvements */
     footer {
         padding: 20px;
         font-size: 12px;
     }
-    
+
     .social-links a {
         width: 44px;
         height: 44px;
@@ -1912,7 +1960,7 @@ footer a:hover {
         min-height: 44px;
         touch-action: manipulation;
     }
-    
+
     /* Better text wrapping */
     .about-content {
         font-size: 14px;
@@ -1920,39 +1968,47 @@ footer a:hover {
         word-wrap: break-word;
         overflow-wrap: break-word;
     }
-    
+
     /* Prevent horizontal scroll */
-    html, body {
+    html,
+    body {
         max-width: 100%;
         overflow-x: hidden;
     }
-    
+
     /* Better quote text */
     #quote-text {
         font-size: 14px;
     }
-    
+
     /* Remove hover effects on mobile (touch devices) */
     @media (hover: none) {
-        #aboutme:hover, #github:hover, #activity:hover, 
-        #love-status:hover, #quote:hover, #guild:hover, 
-        #game:hover, #terminal-faq:hover {
+
+        #aboutme:hover,
+        #github:hover,
+        #activity:hover,
+        #love-status:hover,
+        #quote:hover,
+        #guild:hover,
+        #game:hover,
+        #terminal-faq:hover {
             transform: none;
         }
-        
+
         .activity-item:hover {
             background: rgba(255, 255, 255, 0.03);
         }
-        
+
         .game-item:hover {
             border-color: rgba(255, 255, 255, 0.12);
         }
-        
+
         .nav-link:hover {
             transform: none;
         }
-        
-        .guild-btn:hover, .github-link:hover {
+
+        .guild-btn:hover,
+        .github-link:hover {
             transform: none;
         }
     }
@@ -1962,7 +2018,10 @@ footer a:hover {
    Accessibility
    ================================================================= */
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+
+    *,
+    *::before,
+    *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -1970,7 +2029,8 @@ footer a:hover {
 }
 
 /* Focus styles for keyboard navigation */
-a:focus-visible, button:focus-visible {
+a:focus-visible,
+button:focus-visible {
     outline: 2px solid var(--accent-1);
     outline-offset: 3px;
 }

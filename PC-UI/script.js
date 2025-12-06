@@ -258,34 +258,34 @@ async function fetchDiscordActivity(isFirstLoad = false) {
                 let games = [];
                 let music = null;
                 let customStatus = null;
-                
+
                 if (user.activities && user.activities.length > 0) {
                     console.log('Activities:', user.activities);
-                    
+
                     user.activities.forEach(a => {
                         if (!a) return;
                         const name = (a.name || '').toString();
                         const type = typeof a.type === 'number' ? a.type : parseInt(a.type) || -1;
                         const details = a.details || '';
                         const state = a.state || '';
-                        
+
                         console.log('Activity:', { name, type, details, state });
-                        
-                        const isSpotify = type === 2 || 
-                            name.toLowerCase() === 'spotify' || 
-                            /listening/i.test(String(type)) || 
+
+                        const isSpotify = type === 2 ||
+                            name.toLowerCase() === 'spotify' ||
+                            /listening/i.test(String(type)) ||
                             /spotify/i.test(a.url || '') ||
                             (a.sync_id && a.party);
-                        
-                        const isCustomStatus = type === 4 || 
+
+                        const isCustomStatus = type === 4 ||
                             name.toLowerCase() === 'custom status' ||
                             (name === '' && state && !details);
-                        
+
                         if (isSpotify) {
-                            music = { 
-                                name: 'Spotify', 
-                                track: details || name, 
-                                artist: state, 
+                            music = {
+                                name: 'Spotify',
+                                track: details || name,
+                                artist: state,
                                 assets: a.assets || {},
                                 albumArt: a.assets?.largeImageURL || a.assets?.large_image || null
                             };
@@ -312,7 +312,7 @@ async function fetchDiscordActivity(isFirstLoad = false) {
 
                 function buildCaseNone() {
                     let html = buildHeader(avatarUrl, displayName);
-                    
+
                     if (customStatus) {
                         html += `<div class="activities-list">`;
                         html += `<div class="activity-item status-item">`;
@@ -370,9 +370,9 @@ async function fetchDiscordActivity(isFirstLoad = false) {
                 function buildCaseMusic() {
                     let html = buildHeader(avatarUrl, displayName);
                     html += `<div class="activities-list">`;
-                    
-                    let albumImage = music.albumArt || 
-                        (music.assets && (music.assets.largeImageURL || music.assets.large_image || music.assets.large || music.assets.large_image_url)) || 
+
+                    let albumImage = music.albumArt ||
+                        (music.assets && (music.assets.largeImageURL || music.assets.large_image || music.assets.large || music.assets.large_image_url)) ||
                         null;
                     html += `<div class="activity-item music-item">`;
                     html += `<span class="activity-icon">🎵</span>`;
@@ -384,7 +384,7 @@ async function fetchDiscordActivity(isFirstLoad = false) {
                     html += `<p class="activity-name">${music.track || music.name}</p>`;
                     if (music.artist) html += `<p class="activity-details">${music.artist}</p>`;
                     html += `</div></div>`;
-                    
+
                     if (customStatus) {
                         html += `<div class="activity-item status-item">`;
                         html += `<span class="activity-icon">💬</span>`;
@@ -393,7 +393,7 @@ async function fetchDiscordActivity(isFirstLoad = false) {
                         html += `<p class="activity-name">${customStatus.state}</p>`;
                         html += `</div></div>`;
                     }
-                    
+
                     html += `</div>`;
                     return `<div class="activity-case case-music">${html}</div>`;
                 }
@@ -401,9 +401,9 @@ async function fetchDiscordActivity(isFirstLoad = false) {
                 function buildCaseBoth() {
                     let html = buildHeader(avatarUrl, displayName);
                     html += `<div class="activities-list">`;
-                    
-                    let albumImage = music.albumArt || 
-                        (music.assets && (music.assets.largeImageURL || music.assets.large_image || music.assets.large || music.assets.large_image_url)) || 
+
+                    let albumImage = music.albumArt ||
+                        (music.assets && (music.assets.largeImageURL || music.assets.large_image || music.assets.large || music.assets.large_image_url)) ||
                         null;
                     html += `<div class="activity-item music-item">`;
                     html += `<span class="activity-icon">🎵</span>`;
@@ -415,7 +415,7 @@ async function fetchDiscordActivity(isFirstLoad = false) {
                     html += `<p class="activity-name">${music.track || music.name}</p>`;
                     if (music.artist) html += `<p class="activity-details">${music.artist}</p>`;
                     html += `</div></div>`;
-                    
+
                     games.forEach(g => {
                         html += `<div class="activity-item game-item">`;
                         html += `<span class="activity-icon">🎮</span>`;
@@ -426,7 +426,7 @@ async function fetchDiscordActivity(isFirstLoad = false) {
                         if (g.state) html += `<p class="activity-state">${g.state}</p>`;
                         html += `</div></div>`;
                     });
-                    
+
                     if (customStatus) {
                         html += `<div class="activity-item status-item">`;
                         html += `<span class="activity-icon">💬</span>`;
@@ -435,7 +435,7 @@ async function fetchDiscordActivity(isFirstLoad = false) {
                         html += `<p class="activity-name">${customStatus.state}</p>`;
                         html += `</div></div>`;
                     }
-                    
+
                     html += `</div>`;
                     return `<div class="activity-case case-both">${html}</div>`;
                 }
@@ -453,7 +453,7 @@ async function fetchDiscordActivity(isFirstLoad = false) {
                     finalHTML = buildCaseBoth();
                 }
                 activityElement.innerHTML = finalHTML;
-                
+
                 if (typeof window !== 'undefined') {
                     window.renderActivityForUser = function (u) {
                         try {
@@ -505,7 +505,7 @@ async function fetchDiscordActivity(isFirstLoad = false) {
 function toggleEasterEgg(lang) {
     const heartBeat = document.querySelector('.heart-beat');
     const easterEggImg = document.getElementById('easter-egg-img');
-    
+
     if (lang === 'vi') {
         // Hide heart, show image
         if (heartBeat) heartBeat.style.display = 'none';
@@ -564,104 +564,29 @@ function switchLanguage(lang) {
     document.documentElement.lang = lang;
 }
 
-function initCustomCursor() {
-    if (window.innerWidth <= 768) return;
-    
-    const cursor = document.createElement('div');
-    cursor.className = 'cursor';
-    document.body.appendChild(cursor);
-    
-    const cursorDot = document.createElement('div');
-    cursorDot.className = 'cursor-dot';
-    document.body.appendChild(cursorDot);
-    
-    const trailCount = 5;
-    const trails = [];
-    for (let i = 0; i < trailCount; i++) {
-        const trail = document.createElement('div');
-        trail.className = 'cursor-trail';
-        trail.style.opacity = (1 - i / trailCount) * 0.3;
-        trail.style.width = (8 - i) + 'px';
-        trail.style.height = (8 - i) + 'px';
-        document.body.appendChild(trail);
-        trails.push({ el: trail, x: 0, y: 0 });
-    }
-    
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        cursorDot.style.left = mouseX + 'px';
-        cursorDot.style.top = mouseY + 'px';
-    });
-    
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.15;
-        cursorY += (mouseY - cursorY) * 0.15;
-        
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-        
-        let prevX = cursorX, prevY = cursorY;
-        trails.forEach((trail, i) => {
-            trail.x += (prevX - trail.x) * (0.3 - i * 0.04);
-            trail.y += (prevY - trail.y) * (0.3 - i * 0.04);
-            trail.el.style.left = trail.x + 'px';
-            trail.el.style.top = trail.y + 'px';
-            prevX = trail.x;
-            prevY = trail.y;
-        });
-        
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-    
-    const hoverElements = document.querySelectorAll('a, button, input, .game-item, .nav-link, .lang-btn, .guild-btn, .github-link, .gaming-link, .terminal-input');
-    hoverElements.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
-    
-    document.addEventListener('mousedown', () => cursor.classList.add('click'));
-    document.addEventListener('mouseup', () => cursor.classList.remove('click'));
-    
-    document.addEventListener('mouseleave', () => {
-        cursor.style.opacity = '0';
-        cursorDot.style.opacity = '0';
-        trails.forEach(t => t.el.style.opacity = '0');
-    });
-    document.addEventListener('mouseenter', () => {
-        cursor.style.opacity = '1';
-        cursorDot.style.opacity = '1';
-        trails.forEach((t, i) => t.el.style.opacity = (1 - i / trailCount) * 0.3);
-    });
-}
-
 function createStars() {
     const starCount = 30;
     const colors = ['', 'purple', 'cyan', 'pink'];
-    
+
     for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.className = `star ${colors[Math.floor(Math.random() * colors.length)]}`;
-        
+
         const side = Math.random() > 0.5 ? 'left' : 'right';
         if (side === 'left') {
             star.style.left = Math.random() * 18 + '%';
         } else {
             star.style.right = Math.random() * 18 + '%';
         }
-        
+
         star.style.top = Math.random() * 100 + '%';
         star.style.setProperty('--duration', (1.5 + Math.random() * 2) + 's');
         star.style.animationDelay = Math.random() * 3 + 's';
-        
+
         const size = 2 + Math.random() * 3;
         star.style.width = size + 'px';
         star.style.height = size + 'px';
-        
+
         document.body.appendChild(star);
     }
 }
@@ -672,9 +597,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (noGuiLink && !noGuiLink.href.includes('pc-terminal')) {
         noGuiLink.href = 'pc-terminal/pc-terminal.html';
     }
-    
+
     createStars();
-    initCustomCursor();
     typeWriter();
 
     updateAge();
@@ -705,7 +629,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    
+
                     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                     this.classList.add('active');
                 }
@@ -716,28 +640,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const navbar = document.getElementById('navbar');
     let lastScroll = 0;
-    
+    let scrollTimeout;
+    const scrollThreshold = 5; // Minimum scroll to trigger hide/show
+
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
-        
-        if (currentScroll > 50) {
+        const scrollDelta = currentScroll - lastScroll;
+
+        // Add scrolled class for compact style
+        if (currentScroll > 80) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
+            navbar.classList.remove('hidden'); // Always show at top
         }
-        
+
+        // Hide/show based on scroll direction (only after scrolling past header)
+        if (currentScroll > 200) {
+            if (scrollDelta > scrollThreshold) {
+                // Scrolling down - hide navbar
+                navbar.classList.add('hidden');
+            } else if (scrollDelta < -scrollThreshold) {
+                // Scrolling up - show navbar
+                navbar.classList.remove('hidden');
+            }
+        }
+
+        // Clear existing timeout
+        clearTimeout(scrollTimeout);
+
+        // Show navbar after user stops scrolling
+        scrollTimeout = setTimeout(() => {
+            navbar.classList.remove('hidden');
+        }, 1500);
+
         lastScroll = currentScroll;
     }, { passive: true });
 
     const sections = document.querySelectorAll('#aboutme, #github');
     const navLinks = document.querySelectorAll('.nav-link');
-    
+
     const observerOptions = {
         root: null,
         rootMargin: '-20% 0px -70% 0px',
         threshold: 0
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -750,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }, observerOptions);
-    
+
     sections.forEach(section => observer.observe(section));
 
     (function setupGameCopy() {
@@ -806,9 +754,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 e.preventDefault();
                 const title = (el.getAttribute('title') || '').trim();
                 if (!title) return;
-                
-                const toCopy = title.includes(':') 
-                    ? title.split(':').slice(1).join(':').trim() 
+
+                const toCopy = title.includes(':')
+                    ? title.split(':').slice(1).join(':').trim()
                     : title;
 
                 const ok = await copyText(toCopy);
@@ -964,7 +912,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const terminalOutput = document.getElementById('terminal-output');
         const terminalInput = document.getElementById('terminal-input');
-        
+
         if (!terminalOutput || !terminalInput) return;
 
         let state = 'menu';
@@ -977,7 +925,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cursor = document.createElement('span');
                 cursor.className = 'terminal-cursor';
                 element.appendChild(cursor);
-                
+
                 function type() {
                     if (i < text.length) {
                         if (text[i] === '<') {
@@ -990,7 +938,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 return;
                             }
                         }
-                        
+
                         const char = document.createTextNode(text[i]);
                         element.insertBefore(char, cursor);
                         i++;
@@ -1009,20 +957,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const line = document.createElement('div');
             line.className = `terminal-line ${className}`;
             terminalOutput.appendChild(line);
-            
+
             if (useTypewriter && text) {
                 await typewriterEffect(line, text, speed);
             } else {
                 line.innerHTML = text;
             }
-            
+
             terminalOutput.scrollTop = terminalOutput.scrollHeight;
         }
 
         async function addLines(lines) {
             isTyping = true;
             terminalInput.disabled = true;
-            
+
             for (const lineData of lines) {
                 if (Array.isArray(lineData)) {
                     await addLine(lineData[0], lineData[1] || '', lineData[2] || false, lineData[3] || 15);
@@ -1031,7 +979,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 await sleep(50);
             }
-            
+
             isTyping = false;
             terminalInput.disabled = false;
             terminalInput.focus({ preventScroll: true });
@@ -1049,7 +997,7 @@ document.addEventListener('DOMContentLoaded', function () {
             state = 'menu';
             const ui = getUI();
             const faqData = getFaqData();
-            
+
             const lines = [
                 [ui.welcome1, 'prompt', true, 8],
                 [ui.welcome2, 'prompt', true, 8],
@@ -1058,24 +1006,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 [ui.selectQuestion, 'system', true, 20],
                 ['', '']
             ];
-            
+
             faqData.forEach((faq, index) => {
                 lines.push([`  [${index + 1}] ${faq.q}`, 'question', true, 12]);
             });
-            
+
             lines.push(['', '']);
             lines.push([ui.enterNumber, 'highlight', true, 25]);
-            
+
             await addLines(lines);
         }
 
         async function showAnswer(index) {
             clearTerminal();
-            
+
             const ui = getUI();
             const faqData = getFaqData();
             const faq = faqData[index];
-            
+
             const lines = [
                 [`<span class="user-prompt guest">@guest</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${faq.q}`, 'question', true, 20],
                 ['', ''],
@@ -1087,18 +1035,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 [`  ${ui.yesOption}`, 'question', true, 15],
                 [`  ${ui.noOption}`, 'question', true, 15]
             ];
-            
+
             await addLines(lines);
             state = 'askAgain';
         }
 
         async function handleInput(input) {
             if (isTyping) return;
-            
+
             const ui = getUI();
             const faqData = getFaqData();
             const value = input.trim().toLowerCase();
-            
+
             if (state === 'menu') {
                 const num = parseInt(value);
                 await addLine(`<span class="user-prompt guest">@guest</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${value}`, 'success');
@@ -1129,7 +1077,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        window.refreshTerminalFAQ = function() {
+        window.refreshTerminalFAQ = function () {
             if (!isTyping) {
                 clearTerminal();
                 showMenu();
