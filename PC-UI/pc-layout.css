@@ -607,7 +607,6 @@ main {
 #github::before,
 #activity::before,
 #love-status::before,
-#quote::before,
 #guild::before,
 #game::before {
     content: '';
@@ -625,7 +624,6 @@ main {
 #github:hover::before,
 #activity:hover::before,
 #love-status:hover::before,
-#quote:hover::before,
 #guild:hover::before,
 #game:hover::before {
     opacity: 1;
