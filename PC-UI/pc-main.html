@@ -327,6 +327,14 @@
 
     <script src="script.js"></script>
     <script>
+        // Force reload on back button to prevent grey screen
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                // Page was loaded from cache (back button), force reload
+                window.location.reload();
+            }
+        });
+
         // Loading screen with animated percentage
         const loadingScreen = document.getElementById('loadingScreen');
         const loadingBar = document.getElementById('loadingBar');

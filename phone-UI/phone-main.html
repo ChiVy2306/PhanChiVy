@@ -412,10 +412,25 @@
             }
         });
 
+        // Force reload on back button to prevent grey screen
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                // Page was loaded from cache (back button), force reload
+                window.location.reload();
+            }
+        });
+
         // Loading screen - glass shatter (3s) + fire reveal (0.5s) + pause (0.7s) + fade (0.8s)
         const loadingScreen = document.getElementById('loadingScreen');
         const loadingBar = document.getElementById('loadingBar');
         const loadingPercent = document.getElementById('loadingPercent');
+
+        // Function to hide loading screen
+        function hideLoadingScreen() {
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 200);
+        }
 
         // Animate loading bar with percentage - always reaches 100%
         const totalDuration = 4000; // 4 seconds to match the effect
@@ -434,15 +449,11 @@
             if (progress < 100) {
                 requestAnimationFrame(updateProgress);
             } else {
-                // Only hide after reaching 100%
-                setTimeout(() => {
-                    loadingScreen.classList.add('hidden');
-                }, 200);
+                hideLoadingScreen();
             }
         }
 
         requestAnimationFrame(updateProgress);
-
         // Floating language switcher toggle
         const langFabBtn = document.getElementById('langFabBtn');
         const langFabMenu = document.getElementById('langFabMenu');

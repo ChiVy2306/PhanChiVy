@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Codex: PHAN CHÍ VỸ</title>
-    <link rel="icon" type="image/png" href="../img/snowflake.png">
+    <link rel="icon" type="image/png" href="img/snowflake.png">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap">
     <style>
@@ -525,15 +525,29 @@
     <div class="page-transition" id="pageTransition"></div>
 
     <script>
+        // Force reload on back button to prevent grey screen
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                // Page was loaded from cache (back button), force reload
+                window.location.reload();
+            }
+        });
+
         // Loading screen
         const loadingScreen = document.getElementById('loadingScreen');
         const mainScene = document.querySelector('.main-scene');
 
+        // Function to ensure page is visible
+        function showPage() {
+            if (loadingScreen) loadingScreen.classList.add('hidden');
+            if (mainScene) mainScene.classList.add('loaded');
+        }
+
+        // Normal load - show loading animation
         window.addEventListener('load', () => {
             setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-                mainScene.classList.add('loaded');
-            }, 2200); // Wait for loading animation to complete
+                showPage();
+            }, 2200);
         });
 
         // Create atmospheric particles
