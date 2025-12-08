@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+/* Custom Font - Gerald Script */
+@font-face {
+    font-family: 'Gerald Script';
+    src: url('../font/gerald_script/Gerald Script.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* =================================================================
    Mobile-First Color Palette - Minimal Grey
    ================================================================= */
@@ -9,40 +18,40 @@
     --bg-secondary: #161b22;
     --bg-card: rgba(88, 166, 255, 0.04);
     --bg-elevated: rgba(88, 166, 255, 0.06);
-    
+
     /* Accent colors - Blue */
     --accent-primary: #58a6ff;
     --accent-secondary: rgba(88, 166, 255, 0.75);
     --accent-tertiary: rgba(88, 166, 255, 0.5);
     --accent-quaternary: rgba(88, 166, 255, 0.25);
-    --accent-gradient: linear-gradient(135deg, rgba(88,166,255,0.15), rgba(88,166,255,0.08));
-    --accent-gradient-soft: linear-gradient(135deg, rgba(88,166,255,0.08), rgba(88,166,255,0.03));
-    
+    --accent-gradient: linear-gradient(135deg, rgba(88, 166, 255, 0.15), rgba(88, 166, 255, 0.08));
+    --accent-gradient-soft: linear-gradient(135deg, rgba(88, 166, 255, 0.08), rgba(88, 166, 255, 0.03));
+
     /* Text colors */
     --text-primary: #e8eaed;
     --text-secondary: rgba(232, 234, 237, 0.7);
     --text-muted: rgba(232, 234, 237, 0.45);
-    
+
     /* Borders & shadows */
     --border-color: rgba(88, 166, 255, 0.1);
     --shadow-sm: none;
     --shadow-md: none;
     --shadow-lg: none;
     --shadow-glow: none;
-    
+
     /* Spacing */
     --spacing-xs: 8px;
     --spacing-sm: 12px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
     --spacing-xl: 32px;
-    
+
     /* Border radius */
     --radius-sm: 12px;
     --radius-md: 16px;
     --radius-lg: 24px;
     --radius-full: 9999px;
-    
+
     /* Transitions */
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
@@ -52,7 +61,9 @@
 /* =================================================================
    Reset & Base Styles
    ================================================================= */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -66,13 +77,14 @@ html {
 }
 
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Gerald Script', 'Outfit', sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
-    line-height: 1.6;
+    line-height: 1.7;
     overflow-x: hidden;
     min-height: 100vh;
     padding-bottom: 80px;
+    font-size: 15px;
 }
 
 /* =================================================================
@@ -190,6 +202,7 @@ body::before {
 
 #typewriter {
     color: var(--accent-primary);
+    font-family: 'Gerald Script', 'Outfit', sans-serif;
     -webkit-text-stroke: 0.5px rgba(88, 166, 255, 0.5);
 }
 
@@ -357,8 +370,15 @@ body::before {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* =================================================================
@@ -455,10 +475,23 @@ body::before {
 }
 
 @keyframes heartPulse {
-    0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.2); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.15); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    15% {
+        transform: scale(1.2);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.15);
+    }
 }
 
 .easter-egg-img {
@@ -481,7 +514,7 @@ body::before {
     margin-bottom: var(--spacing-md);
 }
 
-#github-repos > div {
+#github-repos>div {
     background: rgba(88, 166, 255, 0.04);
     border: 1px solid rgba(88, 166, 255, 0.12);
     border-radius: var(--radius-sm);
@@ -490,7 +523,7 @@ body::before {
     transition: all var(--transition-fast);
 }
 
-#github-repos > div:active {
+#github-repos>div:active {
     background: rgba(88, 166, 255, 0.08);
     transform: scale(0.98);
 }
@@ -830,7 +863,9 @@ body::before {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* =================================================================
@@ -867,7 +902,7 @@ body::before {
         max-width: 480px;
         margin: 0 auto;
     }
-    
+
     .game-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -878,20 +913,20 @@ body::before {
     .mobile-header {
         padding: var(--spacing-sm) var(--spacing-md);
     }
-    
+
     .profile-section {
         gap: var(--spacing-sm);
     }
-    
+
     .profile-avatar-wrapper {
         width: 60px;
         height: 60px;
     }
-    
+
     .profile-name {
         font-size: 18px;
     }
-    
+
     .profile-tagline {
         font-size: 12px;
     }
@@ -901,7 +936,10 @@ body::before {
    Accessibility
    ================================================================= */
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+
+    *,
+    *::before,
+    *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -909,13 +947,15 @@ body::before {
 }
 
 /* Focus styles for keyboard navigation */
-a:focus-visible, button:focus-visible {
+a:focus-visible,
+button:focus-visible {
     outline: 2px solid var(--accent-primary);
     outline-offset: 3px;
 }
 
 /* Allow text selection in content areas */
-.about-content, .status-text {
+.about-content,
+.status-text {
     -webkit-user-select: text;
     user-select: text;
 }

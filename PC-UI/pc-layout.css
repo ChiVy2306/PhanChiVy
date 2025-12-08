@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+/* Custom Font - Gerald Script */
+@font-face {
+    font-family: 'Gerald Script';
+    src: url('../font/gerald_script/Gerald Script.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* =================================================================
    Color Palette - Minimal Grey Theme
    ================================================================= */
@@ -77,15 +86,16 @@ html {
 }
 
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Gerald Script', 'Outfit', sans-serif;
     background: var(--bg-deep);
     color: var(--text-primary);
-    line-height: 1.7;
+    line-height: 1.8;
     overflow-x: hidden;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-size: 16px;
 }
 
 /* =================================================================
@@ -490,7 +500,7 @@ header::after {
 
 #typewriter {
     color: var(--accent-1);
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Gerald Script', 'Outfit', sans-serif;
     font-weight: 700;
     font-style: italic;
     -webkit-text-stroke: 1px rgba(88, 166, 255, 0.6);
