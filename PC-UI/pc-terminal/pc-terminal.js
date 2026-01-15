@@ -174,7 +174,7 @@ function getTextWidth(text) {
     for (let i = 0; i < text.length; i++) {
         const char = text[i];
         const code = char.charCodeAt(0);
-        if ((code >= 0x3040 && code <= 0x309F) || 
+        if ((code >= 0x3040 && code <= 0x309F) ||
             (code >= 0x30A0 && code <= 0x30FF) ||
             (code >= 0x4E00 && code <= 0x9FAF) ||
             (code >= 0x3400 && code <= 0x4DBF) ||
@@ -194,10 +194,10 @@ function createBox(text) {
     const padding = 3;
     const contentWidth = textWidth + (padding * 2);
     const dashes = '─'.repeat(contentWidth);
-    
+
     const spacesBefore = ' '.repeat(padding);
     const spacesAfter = ' '.repeat(padding);
-    
+
     return {
         top: `┌${dashes}┐`,
         middle: `│${spacesBefore}${text}${spacesAfter}│`,
@@ -211,7 +211,7 @@ function typewriterEffect(element, text, speed = 1.5) {
         const cursor = document.createElement('span');
         cursor.className = 'typing-cursor';
         element.appendChild(cursor);
-        
+
         function type() {
             if (i < text.length) {
                 if (text[i] === '<') {
@@ -241,20 +241,20 @@ async function addLine(text, className = '', useTypewriter = false, speed = 1.5)
     const line = document.createElement('div');
     line.className = `terminal-line ${className}`;
     terminalOutput.appendChild(line);
-    
+
     if (useTypewriter && text) {
         await typewriterEffect(line, text, speed);
     } else {
         line.innerHTML = text;
     }
-    
+
     terminalOutput.scrollTop = terminalOutput.scrollHeight;
 }
 
 async function addLines(lines) {
     isTyping = true;
     terminalInput.disabled = true;
-    
+
     for (const lineData of lines) {
         if (Array.isArray(lineData)) {
             await addLine(lineData[0], lineData[1] || '', lineData[2] || false, lineData[3] || 1.5);
@@ -263,7 +263,7 @@ async function addLines(lines) {
         }
         await sleep(30);
     }
-    
+
     isTyping = false;
     terminalInput.disabled = false;
     terminalInput.focus();
@@ -287,7 +287,7 @@ async function showBooting() {
         [`[✓] ${ui.booting.ready}`, 'success', true, 1.5],
         ['', ''],
     ];
-    
+
     await addLines(bootLines);
     await sleep(500);
     await showLanguageSelection();
@@ -297,7 +297,7 @@ async function showLanguageSelection() {
     state = 'language';
     clearTerminal();
     const ui = getUI();
-    
+
     const welcomeBox = createBox(ui.booting.welcome);
     const lines = [
         [welcomeBox.top, 'prompt', true, 1.5],
@@ -312,7 +312,7 @@ async function showLanguageSelection() {
         ['', ''],
         [ui.booting.enterLang, 'highlight', true, 1.5]
     ];
-    
+
     await addLines(lines);
 }
 
@@ -320,7 +320,7 @@ async function showMenu() {
     state = 'menu';
     clearTerminal();
     const ui = getUI();
-    
+
     const welcomeBox = createBox(ui.booting.welcome);
     const lines = [
         [welcomeBox.top, 'prompt', true, 1.5],
@@ -330,14 +330,14 @@ async function showMenu() {
         [ui.booting.selectWhat, 'system', true, 1.5],
         ['', '']
     ];
-    
+
     ui.menu.forEach(item => {
         lines.push([`  [${item.num}] ${item.title}`, 'output', true, 1.5]);
     });
-    
+
     lines.push(['', '']);
     lines.push([ui.booting.enterNumber, 'highlight', true, 1.5]);
-    
+
     await addLines(lines);
 }
 
@@ -345,7 +345,7 @@ async function showAbout() {
     clearTerminal();
     const age = calculateAge();
     const ui = getUI();
-    
+
     const aboutText = {
         vi: [
             `Hello! I'm Chí Vỹ, a ${age}-year-old student currently studying at IUH`,
@@ -381,21 +381,21 @@ async function showAbout() {
             'できるだけ多くのことを学びたいです！ 🌟🌟'
         ]
     };
-    
+
     const lines = [
         [`<span class="user-prompt hoshimiya">@hoshimiya</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${ui.menu[0].title}`, 'system', true, 1.5],
         ['', '']
     ];
-    
+
     aboutText[currentLang].forEach(line => {
         lines.push([line, 'output', true, 1.5]);
     });
-    
+
     lines.push(['', '']);
     lines.push(['────────────────────────────────────────', 'prompt', true, 1.5]);
     lines.push(['', '']);
     lines.push([ui.booting.returnMenu, 'highlight', true, 1.5]);
-    
+
     await addLines(lines);
     state = 'waiting';
 }
@@ -403,19 +403,19 @@ async function showAbout() {
 async function showProjects() {
     clearTerminal();
     const ui = getUI();
-    
+
     const lines = [
         [`<span class="user-prompt hoshimiya">@hoshimiya</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${ui.menu[1].title}`, 'system', true, 1.5],
         ['', ''],
         ['Fetching repositories...', 'system', true, 1.5]
     ];
-    
+
     await addLines(lines);
-    
+
     try {
         const response = await fetch('https://api.github.com/users/ChiVy2306/repos?sort=updated&per_page=5');
         const repos = await response.json();
-        
+
         if (repos && repos.length > 0) {
             const repoLines = [['', '']];
             repos.forEach(repo => {
@@ -433,7 +433,7 @@ async function showProjects() {
     } catch (error) {
         await addLine('Unable to fetch repositories. 😅', 'error', true, 1.5);
     }
-    
+
     await addLine('', '');
     await addLine('────────────────────────────────────────', 'prompt', true, 1.5);
     await addLine('', '');
@@ -444,45 +444,45 @@ async function showProjects() {
 async function showActivity() {
     clearTerminal();
     const ui = getUI();
-    
+
     const lines = [
         [`<span class="user-prompt hoshimiya">@hoshimiya</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${ui.menu[2].title}`, 'system', true, 1.5],
         ['', ''],
         ['Fetching activity...', 'system', true, 1.5]
     ];
-    
+
     await addLines(lines);
-    
+
     try {
         const response = await fetch('https://data-fetcher-p8pv.onrender.com/api/users', {
             method: 'GET',
             headers: { 'Accept': 'application/json' }
         });
-        
+
         if (!response.ok) throw new Error('API error');
-        
+
         const result = await response.json();
         const data = result.data || result;
         let user = null;
-        
+
         if (Array.isArray(data)) {
             user = data.find(u => {
                 const username = u.username || u.discord_name || u.name || (u.user && u.user.username);
-                return username === 'bokuwa_buta.san' || username === '@bokuwa_buta.san';
+                return username === 'hoshimiya_yozora' || username === '@hoshimiya_yozora';
             });
         }
-        
+
         const activityLines = [['', '']];
-        
+
         if (user) {
-            const displayName = user.username || user.discord_name || user.name || 'bokuwa_buta.san';
+            const displayName = user.username || user.discord_name || user.name || 'hoshimiya_yozora';
             activityLines.push([`<span class="highlight">${displayName}</span>`, 'system', true, 1.5]);
             activityLines.push(['', '']);
-            
+
             let games = [];
             let music = null;
             let customStatus = null;
-            
+
             if (user.activities && user.activities.length > 0) {
                 user.activities.forEach(a => {
                     if (!a) return;
@@ -490,14 +490,14 @@ async function showActivity() {
                     const type = typeof a.type === 'number' ? a.type : parseInt(a.type) || -1;
                     const details = a.details || '';
                     const state = a.state || '';
-                    
-                    const isSpotify = type === 2 || name.toLowerCase() === 'spotify' || 
+
+                    const isSpotify = type === 2 || name.toLowerCase() === 'spotify' ||
                         /listening/i.test(String(type)) || /spotify/i.test(a.url || '') ||
                         (a.sync_id && a.party);
-                    
+
                     const isCustomStatus = type === 4 || name.toLowerCase() === 'custom status' ||
                         (name === '' && state && !details);
-                    
+
                     if (isSpotify) {
                         music = { track: details || name, artist: state };
                     } else if (isCustomStatus) {
@@ -507,14 +507,14 @@ async function showActivity() {
                     }
                 });
             }
-            
+
             if (music) {
                 activityLines.push(['🎵 Listening to:', 'output', true, 1.5]);
                 activityLines.push([`  ${music.track}`, 'output', true, 1.5]);
                 if (music.artist) activityLines.push([`  by ${music.artist}`, 'output', true, 1.5]);
                 activityLines.push(['', '']);
             }
-            
+
             if (games.length > 0) {
                 activityLines.push(['🎮 Currently Playing:', 'output', true, 1.5]);
                 games.forEach(g => {
@@ -524,13 +524,13 @@ async function showActivity() {
                 });
                 activityLines.push(['', '']);
             }
-            
+
             if (customStatus) {
                 activityLines.push(['💬 Custom Status:', 'output', true, 1.5]);
                 activityLines.push([`  ${customStatus.state}`, 'output', true, 1.5]);
                 activityLines.push(['', '']);
             }
-            
+
             if (!music && games.length === 0 && !customStatus) {
                 activityLines.push(['😴 Not playing anything', 'output', true, 1.5]);
                 activityLines.push(['', '']);
@@ -539,13 +539,13 @@ async function showActivity() {
             activityLines.push(['User not found 🤔', 'error', true, 1.5]);
             activityLines.push(['', '']);
         }
-        
+
         await addLines(activityLines);
     } catch (error) {
         await addLine('Unable to fetch activity. API temporarily unavailable.', 'error', true, 1.5);
         await addLine('', '');
     }
-    
+
     await addLine('────────────────────────────────────────', 'prompt', true, 1.5);
     await addLine('', '');
     await addLine(getUI().booting.returnMenu, 'highlight', true, 1.5);
@@ -555,16 +555,16 @@ async function showActivity() {
 async function showGames() {
     clearTerminal();
     const ui = getUI();
-    
+
     const lines = [
         [`<span class="user-prompt hoshimiya">@hoshimiya</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${ui.menu[3].title}`, 'system', true, 1.5],
         ['', ''],
         ['Click on a game to copy its ID/username:', 'output', true, 1.5],
         ['', '']
     ];
-    
+
     await addLines(lines);
-    
+
     const gameGrid = document.createElement('div');
     gameGrid.className = 'game-grid';
     games.forEach(game => {
@@ -574,8 +574,8 @@ async function showGames() {
         if (game.title) {
             gameItem.title = game.title;
             gameItem.addEventListener('click', async () => {
-                const toCopy = game.title.includes(':') 
-                    ? game.title.split(':').slice(1).join(':').trim() 
+                const toCopy = game.title.includes(':')
+                    ? game.title.split(':').slice(1).join(':').trim()
                     : game.title;
                 try {
                     await navigator.clipboard.writeText(toCopy);
@@ -587,7 +587,7 @@ async function showGames() {
         }
         gameGrid.appendChild(gameItem);
     });
-    
+
     terminalOutput.appendChild(gameGrid);
     await addLine('', '');
     await addLine('────────────────────────────────────────', 'prompt', true, 1.5);
@@ -599,11 +599,11 @@ async function showGames() {
 async function showQuote() {
     clearTerminal();
     const ui = getUI();
-    
+
     const today = new Date();
     const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
     const quote = quotes[dayOfYear % quotes.length];
-    
+
     const lines = [
         [`<span class="user-prompt hoshimiya">@hoshimiya</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${ui.menu[4].title}`, 'system', true, 1.5],
         ['', ''],
@@ -613,7 +613,7 @@ async function showQuote() {
         ['', ''],
         [ui.booting.returnMenu, 'highlight', true, 1.5]
     ];
-    
+
     await addLines(lines);
     state = 'waiting';
 }
@@ -621,7 +621,7 @@ async function showQuote() {
 async function showDiscord() {
     clearTerminal();
     const ui = getUI();
-    
+
     const lines = [
         [`<span class="user-prompt hoshimiya">@hoshimiya</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${ui.menu[5].title}`, 'system', true, 3],
         ['', ''],
@@ -635,7 +635,7 @@ async function showDiscord() {
         ['', ''],
         [ui.booting.returnMenu, 'highlight', true, 1.5]
     ];
-    
+
     await addLines(lines);
     state = 'waiting';
 }
@@ -643,7 +643,7 @@ async function showDiscord() {
 async function showRelationship() {
     clearTerminal();
     const ui = getUI();
-    
+
     const lines = [
         [`<span class="user-prompt hoshimiya">@hoshimiya</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${ui.menu[6].title}`, 'system', true, 3],
         ['', ''],
@@ -655,7 +655,7 @@ async function showRelationship() {
         ['', ''],
         [ui.booting.returnMenu, 'highlight', true, 1.5]
     ];
-    
+
     await addLines(lines);
     state = 'waiting';
 }
@@ -663,7 +663,7 @@ async function showRelationship() {
 async function showLanguageMenu() {
     clearTerminal();
     const ui = getUI();
-    
+
     const lines = [
         [`<span class="user-prompt hoshimiya">@hoshimiya</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${ui.menu[7].title}`, 'system', true, 3],
         ['', ''],
@@ -675,7 +675,7 @@ async function showLanguageMenu() {
         ['', ''],
         [ui.booting.enterLang, 'highlight', true, 1.5]
     ];
-    
+
     await addLines(lines);
     state = 'language';
 }
@@ -683,14 +683,14 @@ async function showLanguageMenu() {
 async function showReturnToGUI() {
     clearTerminal();
     const ui = getUI();
-    
+
     const lines = [
         [`<span class="user-prompt hoshimiya">@hoshimiya</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${ui.menu[8].title}`, 'system', true, 3],
         ['', ''],
         ['Redirecting to GUI mode...', 'output', true, 1.5],
         ['', '']
     ];
-    
+
     await addLines(lines);
     await sleep(1500);
     window.location.href = '../pc-main.html';
@@ -699,10 +699,10 @@ async function showReturnToGUI() {
 async function closeTerminal() {
     const ui = getUI();
     clearTerminal();
-    
+
     await addLine(ui.booting.closed, 'system', true, 1.5);
     await sleep(1000);
-    
+
     document.querySelector('.terminal-container').style.display = 'none';
     showGUI();
 }
@@ -722,14 +722,14 @@ function showGUI() {
 
 async function handleInput(input) {
     if (isTyping) return;
-    
+
     const value = input.trim();
     const ui = getUI();
-    
+
     if (state === 'language') {
         const num = parseInt(value);
         await addLine(`<span class="user-prompt">@guest</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${value}`, 'command');
-        
+
         if (num === 1) {
             currentLang = 'vi';
             await showMenu();
@@ -746,7 +746,7 @@ async function handleInput(input) {
     } else if (state === 'menu') {
         const num = parseInt(value);
         await addLine(`<span class="user-prompt">@guest</span><span class="prompt-symbol">#</span> <span class="prompt-path">~</span> ${value}`, 'command');
-        
+
         if (num >= 1 && num <= ui.menu.length) {
             if (num === 9) {
                 await showReturnToGUI();
@@ -783,7 +783,7 @@ terminalInput.addEventListener('keypress', (e) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     showBooting();
-    
+
     document.querySelector('.terminal-container')?.addEventListener('click', () => {
         if (!isTyping) terminalInput.focus();
     });

@@ -226,9 +226,9 @@ async function fetchDiscordActivity(isFirstLoad = false) {
         if (Array.isArray(data)) {
             user = data.find(u => {
                 const username = u.username || u.discord_name || u.name || (u.user && u.user.username);
-                return username === 'bokuwa_buta.san' ||
-                    username === '@bokuwa_buta.san' ||
-                    (u.user && (u.user.username === 'bokuwa_buta.san' || u.user.global_name === 'bokuwa_buta.san'));
+                return username === 'hoshimiya_yozora' ||
+                    username === '@hoshimiya_yozora' ||
+                    (u.user && (u.user.username === 'hoshimiya_yozora' || u.user.global_name === 'hoshimiya_yozora'));
             });
 
             if (!user) {
